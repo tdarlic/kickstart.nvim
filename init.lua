@@ -669,7 +669,7 @@ require('lazy').setup({
       },
     },
   },
-  -- Use SudoWrite to write to unwritible file
+  -- Use SudoWrite to write to unwritible file --> SudaWrite
   { 'lambdalisue/vim-suda' },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
