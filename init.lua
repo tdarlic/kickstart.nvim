@@ -886,6 +886,10 @@ require('lazy').setup({
       },
       opts = {
         -- you're options coes here
+        install = {
+          path = '/home/tomislav/.local/bin/',
+          bin = '/home/tomislav/.local/bin/phpactor',
+        },
       },
     },
   },
