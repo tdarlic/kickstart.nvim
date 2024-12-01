@@ -28,6 +28,62 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
 
+    dap.set_log_level 'TRACE'
+
+    dap.adapters.php = {
+      type = 'executable',
+      command = 'node',
+      args = { os.getenv 'HOME' .. '/vscode-php-debug/out/phpDebug.js' },
+    }
+
+    dap.adapters.cppdbg = {
+      id = 'cppdbg',
+      type = 'executable',
+      command = '/home/tomislav/vscode-cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+    }
+
+    dap.adapters.gdb = {
+      type = 'executable',
+      command = 'gdb-multiarch',
+      -- args = { '-i', 'dap' },
+      name = 'gdb',
+    }
+
+    dap.configurations.php = {
+      {
+        type = 'php',
+        request = 'launch',
+        name = 'Listen for Xdebug ->',
+        port = 9003,
+      },
+    }
+
+    dap.configurations.c = {
+      {
+        name = 'Launch',
+        type = 'gdb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopAtBegginningOfMainSubprogram = false,
+        stopOnEntry = false,
+      },
+      {
+        name = 'Attach to gdb port 2000',
+        type = 'cppdbg',
+        request = 'launch',
+        MIMode = 'gdb',
+        miDebuggerServerAddress = 'localhost:2000',
+        miDebuggerPath = '/usr/bin/gdb-multiarch',
+        cwd = '${workspaceFolder}',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+      },
+    }
+
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
